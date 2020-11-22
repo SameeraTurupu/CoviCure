@@ -95,8 +95,6 @@ public class question_four extends AppCompatActivity{
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
-            TextView textView = (TextView) findViewById(R.id.xrayresults);
-            textView.setText("Processing....");
             Uri targetUri = data.getData();
             String filePath = getPath(targetUri);
             SharedPreferences sharedPreferences = getSharedPreferences("8ResQ",0);
