@@ -17,31 +17,27 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import org.json.JSONObject;
+
+import java.io.File;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 //import com.squareup.okhttp.MediaType;
 //import com.squareup.okhttp.OkHttpClient;
 //import com.squareup.okhttp.Request;
 //import com.squareup.okhttp.RequestBody;
 //import com.squareup.okhttp.Response;
 
-import okhttp3.OkHttpClient;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.Request;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import okhttp3.MultipartBody;
-
 //import okhttp3.RequestBody;
 
 public class question_four extends AppCompatActivity{
-        TextView textTargetUri;
+    TextView textTargetUri;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,14 +49,14 @@ public class question_four extends AppCompatActivity{
         ConstraintLayout fl = (ConstraintLayout) findViewById(R.id.question_four);
 
 
-            buttonLoadImage.setOnClickListener(new Button.OnClickListener(){
+        buttonLoadImage.setOnClickListener(new Button.OnClickListener(){
 
-                @Override
-                public void onClick(View arg0) {
-                    Intent intent = new Intent(Intent.ACTION_PICK,
-                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, 0);
-                }});
+            @Override
+            public void onClick(View arg0) {
+                Intent intent = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, 0);
+            }});
 
         fl.setOnTouchListener(new OnSwipeTouchListener(this) {
             @Override
@@ -92,28 +88,21 @@ public class question_four extends AppCompatActivity{
     }
 
 
-        private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
-        @Override
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            // TODO Auto-generated method stub
-            super.onActivityResult(requestCode, resultCode, data);
+    private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        super.onActivityResult(requestCode, resultCode, data);
 
-            if (resultCode == RESULT_OK) {
-                Uri targetUri = data.getData();
-            }
-            else {
-                textTargetUri.setText("couldn't upload!");
-
-//                textTargetUri.setText(targetUri.toString());
-
-
-                String filePath = getPath(targetUri);
-                SharedPreferences sharedPreferences = getSharedPreferences("8ResQ",0);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("filePath",filePath);
-                editor.apply();
-                File file = new File(filePath);
-                String file_extn = filePath.substring(filePath.lastIndexOf(".") + 1);
+        if (resultCode == RESULT_OK) {
+            Uri targetUri = data.getData();
+            String filePath = getPath(targetUri);
+            SharedPreferences sharedPreferences = getSharedPreferences("8ResQ",0);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("filePath",filePath);
+            editor.apply();
+            File file = new File(filePath);
+            String file_extn = filePath.substring(filePath.lastIndexOf(".") + 1);
 //                image_name_tv.setText(filePath);
 
             try {
@@ -163,7 +152,7 @@ public class question_four extends AppCompatActivity{
                                         });
 
 //                                            textTargetUri.setText("Your X-ray seem to be fine.");
-                                        }else{
+                                    }else{
 //                                            textTargetUri.setText("Please swipe to continue to next step.");
                                         new Handler(Looper.getMainLooper()).post(new Runnable(){
                                             @Override
@@ -183,22 +172,25 @@ public class question_four extends AppCompatActivity{
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                            });
+                            }
+                        });
 
-                            thread.start();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        //NOT IN REQUIRED FORMAT
+                        thread.start();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } else {
+                    //NOT IN REQUIRED FORMAT
                 }
 
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
+        else {
+            textTargetUri.setText("couldn't upload!");
+        }
+    }
 
     public String getPath(Uri uri) {
         String[] projection = {MediaStore.MediaColumns.DATA};
