@@ -30,8 +30,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="100dp"
-        android:width="300dp"
+        android:width="350dp"
         android:fontFamily="@font/bevan"
+        android:paddingLeft="20dp"
         android:text="Now more than ever, your safety matters"
         android:textColor="@color/colorPrimary"
         android:textSize="24sp" />
