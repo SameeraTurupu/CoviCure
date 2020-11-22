@@ -72,4 +72,52 @@ router.get('/', function(context, req) {
   }
 });
 
+router.post('/active', function(context, response) {
+  //console.log(request.body);
+  var queryResult = {};
+  const connection = new Connection(config);
+  connection.on("connect", err => {
+      if (err) {
+          console.error(err.message);
+      } else {
+          console.log("CONNECTED!");
+          checkUser(context.body.id);
+      }
+  });
+  function checkUser(id) {
+      //console.log("Reading rows from the Table...");
+      // console.log('addressedBy' in request.body);
+      
+      sql = "SELECT * FROM users WHERE id='" + id + "';";
+
+      console.log(sql);
+      const req = new Request(sql,
+          (err, rowCount) => {
+            if (err) {
+              console.error(err.message);
+              response.status(400).send({"message": "Invalid User Id", "status": 400});
+            }
+            else if(rowCount == 0) {
+              response.status(400).send({"message": "Invalid User Id", "status": 400});
+            }
+          }
+        );
+
+        req.on("row", columns => {
+          var id = "";
+          var isActive = 0;
+          columns.forEach(column => {
+              if (column.metadata.colName == 'id')
+                  id = column.value;
+              else if (column.metadata.colName == 'isActive')
+                  isActive = column.value;
+          });
+          queryResult = {"id": id, "isActive": isActive};
+        });
+
+  connection.execSql(req);
+}    
+  
+});
+
 module.exports = router;
