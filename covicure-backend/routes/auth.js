@@ -50,6 +50,29 @@ router.post('/login', function(request, response) {
             }
         }
         );
+
+        request.on("row", columns => {
+            var role = "";
+            var id = "";
+            var name = "";
+        columns.forEach(column => {
+            if (column.metadata.colName == 'id')
+                id = column.value;
+            else if (column.metadata.colName == 'name')
+                name = column.value;
+            else if (column.metadata.colName == 'role')
+                role = column.value;
+            else if (column.metadata.colName == 'password') {
+                if (column.value == userPass) {
+                    response.status(200).send({"message": "Login Successful", "role": role, "status": 200, "userid": id, "username": name});
+                }
+                else {
+                    response.status(400).send({"message": "Authentication Failed! Invalid password", "status": 400});
+                }
+            }
+        });
+        });
+        
     connection.execSql(request);
   }    
 });
