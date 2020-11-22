@@ -114,7 +114,16 @@ router.post('/active', function(context, response) {
           });
           queryResult = {"id": id, "isActive": isActive};
         });
-
+        
+        req.on('requestCompleted', function() {
+          context.res = {
+            status: 200,
+            body: queryResult
+          };
+    
+          //context.done();
+          response.status(200).send(queryResult);
+        });
   connection.execSql(req);
 }    
   
