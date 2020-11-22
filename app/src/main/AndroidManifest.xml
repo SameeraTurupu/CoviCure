@@ -14,7 +14,7 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo_without_background"
-        android:label="Request Resource"
+        android:label="CoviCare"
         android:roundIcon="@drawable/logo_without_background"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -55,10 +55,10 @@
             android:label="@string/question2" />
         <activity
             android:name=".question_three"
-            android:label="@string/question3" />
+            android:label="Question4" />
         <activity
             android:name=".question_four"
-            android:label="Question4" />
+            android:label="Question3" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
